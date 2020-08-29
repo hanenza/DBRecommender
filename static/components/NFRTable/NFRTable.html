@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <link rel='stylesheet' href='app.css'>
+  <link rel="stylesheet" href="components/style/NFRTableStyle.css">
+  <link rel="stylesheet" type="text/css" href="components/style/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="components/style/fontAwesome.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <br>
+  <h1 class="hedaers">NFR Editor Page</h1>
+  <P class="paragrapgs"> choose youre NFR Values:</P>
+
+  <div class="container">
+    <table class="nfrtable">
+      <thead>
+        <tr>
+          <td>NFR Values <a ng-click="openUpdatingModal()" class="fa fa-edit"
+              style="font-size:24px; padding: 7px; left:30px"></a></td>
+          <td ng-repeat="(key,value) in nfrDefalutValue"  ng-if="key!='queryComplexity'">{{value.value}}</td>
+        </tr>
+        <tr>
+          <th>Class</th>
+          <th ng-repeat="(key,value) in nfrDefalutValue"  ng-if="key!='queryComplexity'">{{key}}</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="class in classList">
+        <td>{{class.name}}</td>
+        <td class="cell-breakWord" ng-repeat="(key,value) in nfrDefalutValue" ng-if="key!='queryComplexity'">
+          <select ng-model="NFREditorList[class.name][key]" ng-if="value.type=='Select Box'"
+            ng-options="item for (item, itemy) in value.legend"
+            ng-change="save(NFREditorList[class.name][key],class.name,key)"></select>
+          <div ng-if="value.type=='Range'">
+            <input type="range" ng-init="0" ng-model="NFREditorList[class.name][key]" style="width: 200px;" ng-if="key!='queryComplexity'"
+              ng-change="save(NFREditorList[class.name][key],class.name,key)" min="{{value.min}}" max="{{value.max}}"
+              step="{{value.step}}"> {{NFREditorList[class.name][key]}}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <button ng-click="sendRequest()" class="button">Show Matrix</button>
+  <button ng-click="UpdateTheJSON()" class="button">Save</button>
+
+  <div id="showMatrix" class="w3-modal">
+    <div class="modal-content-matrix" id="umlMatricContainer">
+      <header class="modal-header-matrix">
+        <span ng-click="closeMatrixWindowModal()" class="close-edit">&times;</span>
+        <h4 class="creation" style="text-align: center;">UML Matrix</h4>
+      </header>
+      <div id="showMatrixTable">
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="aboutNFRid" role="dialog">
+    <!-- Modal content-->
+    <div class="modal-content-about">
+      <div class="modal-header">
+        <h4 class="modal-title">how to use NFR table?</h4>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: left;">
+          <i class="fa fa-bomb"></i> At the top of the table you can change the default values and match them to your
+          requirements.
+          <br />
+          <i class="fa fa-bomb"></i> Into the table you should to choose the NFR value for each class.
+          <br />
+          <i class="fa fa-bomb"></i> Show Matrix button helps you to see the calculated Matrix of the NFRs values that
+          was chosen.
+          <br />
+          <i class="fa fa-bomb"></i> You should press save bottun to save your changes.
+        </p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <i class="fa fa-question" ng-click="about()" style="font-size:24px; position: fixed;bottom: 5%;left:95%"></i>
+
+
+
+
+  <!-- edit NFR values modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="nfrValuesModal" role="dialog" style="width: 50%; margin: 0 auto ; position: relative;">
+    <div class="modal-content-matrix">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" ng-model="dbNameForEditing">Edit NFR Values</h4>
+        </div>
+        <div class="modal-body">
+          <p style="color: red;" ng-model="errorMessage">{{errorMessage}}</p>
+          <xp ng-repeat="(key, value) in nfrDefalutValue">
+            {{key}} <input ng-model="(value.value)" type="text" style="width:100%; height:24px;">
+          </xp>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-click="cancelUpdateNFRValues()">Cancel</button>
+          <button type="button" class="btn btn-default" ng-click="updateNFRValues()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

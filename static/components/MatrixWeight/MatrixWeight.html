@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <link rel="stylesheet" href="components/style/MatrixWeight.css">
+    <link rel="stylesheet" type="text/css" href="components/style/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="components/style/fontAwesome.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel='stylesheet' href='app.css'>
+    <br>
+
+
+    <h1 class="hedaers">Matrix Weight</h1>
+    <P class="paragrapgs"> choose youre matrixs Weights:</P>
+
+    <table class="blueTable">
+        <thead>
+            <tr>
+                <th style="width: 15%;">Component</th>
+                <th>Value</th>
+                <th><button ng-click="UpdateTheJSON()" class="myButton" id="saveButton">Save</button></th>
+            </tr>
+        </thead>
+        <tr>
+            <th style="width: 25%;">Data Requirements</th>
+            <th><input type="range" ng-model="component.uml" min=0 max=100 step=1 to-number />{{component.uml}}%</th>
+            <th><button class="myButton" ng-click="sendRequestUML()">Show Matrix</button></th>
+        </tr>
+        <tr>
+            <th style="width: 25%;">Functional Requirements</th>
+            <th><input type="range" ng-model="component.sql" min=0 max=100 step=1 to-number />{{component.sql}}%</th>
+            <th><button class="myButton" ng-click="sendRequestSQL()">Show Matrix</button></th>
+        </tr>
+        <tr>
+            <th style="width: 25%;">Non-Functional Requirements</th>
+            <th><input type="range" ng-model="component.nfr" min=0 max=100 step=1 to-number />{{component.nfr}}%</th>
+            <th><button class="myButton" ng-click="sendRequestNFR()">Show Matrix</button></th>
+        </tr>
+        <tr>
+            <th style="width: 15%;">Final Matrix</th>
+            <th>Components values must be equal to 100%</th>
+            <th><button class="myButton" ng-click="sendRequestAlgorithmInput()">Show Matrix</button></th>
+        </tr>
+        <tr>
+            <th style="width: 15%;">Project result </th>
+            <th><button class="myButton" ng-click="sendRequestClusters()">Show Clusters</button></th>
+            <th><button class="myButton" ng-click="sendRequestReslut()">Show Result</button></th>
+        </tr>
+    </table>
+
+
+    <br>
+
+    <div ng-show="clusterTable">
+        <table class="blueTable">
+            <tr>
+                <td>Clusert</td>
+                <td>Classes</td>
+            </tr>
+            <tr ng-repeat="cluster in clusterArray.list">
+                <td>Clusert {{$index+1}}</td>
+                <td>{{cluster}}</td>
+            </tr>
+            <tr style="background-color: red; color:white">
+                <td>EPS</td>
+                <td>{{clusterArray.eps}}</th>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-repeat="cluster in resultArray">
+        <br>
+        <br>
+        <table class="blueTable">
+            <tr>
+                <td style="color: white; background-color: black;">Clusert {{cluster.clusterName}}</td>
+                <td ng-repeat="(name,value) in nfrDefalutValue">{{name}}</td>
+                <td>Distance</td>
+            </tr>
+            <tr ng-repeat="db in cluster.clusterInfo">
+                <td>{{db.dbName}}</td>
+                <td ng-repeat="(key,value) in db.nfrValues">{{value}}</th>
+                <th>{{db.result}}</th>
+            </tr>
+        </table>
+    </div>
+
+
+
+
+
+    <div id="showMatrix" class="w3-modal">
+        <div class="modal-content-matrix" id="umlMatricContainer">
+            <header class="modal-header-matrix">
+                <span ng-click="closeMatrixWindowModal()" class="close-edit">&times;</span>
+                <h4 class="creation" style="text-align: center;" ng-bind="matrixName">Weighted Matrix</h4>
+            </header>
+            <div id="showMatrixTable">
+            </div>
+        </div>
+    </div>
+
+    
+  <div class="modal fade" id="aboutid" role="dialog">
+    <!-- Modal content-->
+    <div class="modal-content-about">
+      <div class="modal-header">
+        <h4 class="modal-title">how to use Matrix Weight?</h4>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: left;"> <i class="fa fa-bomb"></i> Press Show Matrix button to see the Matrix of the NFR you want.
+          <br/>
+          <i class="fa fa-bomb"></i> You can change the weight of each matrix using the Value column.
+          <br/>
+          <i class="fa fa-bomb"></i>You can see the clusters you got by pressing Show Clusters button.
+          <br/>
+          <i class="fa fa-bomb"></i> You can see the recommended DB and the distance of the cluster from the profiles by pressing Show Result button.
+          <br/>
+         
+        </p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <i class="fa fa-question" ng-click="about()" style="font-size:24px; position: fixed;bottom: 5%;left:95%"></i>
+
+
+</body>
+
+</html>
